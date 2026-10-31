@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>新車獎金條件｜Honda South TC</title>
+<meta name="theme-color" content="#16324F">
+<meta name="description" content="Honda South TC 新車獎金條件試算：選車型自動列出已知獎金，保險與貸款勾選自動帶入，累台與加碼自行輸入，自動合計。">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="獎金條件">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F2EC; --paper-2:#EDEAE1; --card:#FFFFFF;
+  --ink:#141A20; --ink-2:#2A333B; --dim:#6E7579; --dim-2:#9AA0A2;
+  --navy:#16324F; --navy-2:#0D2237; --navy-tint:#EAF0F5;
+  --yellow:#FFD23F; --yellow-soft:#FFF7DC; --yellow-line:#E9C13A;
+  --green:#2C7A46; --red:#C0392B;
+  --line:#E1DDD2; --line-2:#EFECE3;
+  --r:4px;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --shadow:0 1px 2px rgba(20,26,32,.05),0 8px 20px -16px rgba(20,26,32,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
+body{margin:0;background:var(--paper);color:var(--ink);overflow-x:hidden;max-width:100vw;
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  padding-bottom:calc(176px + env(safe-area-inset-bottom));}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input{font-family:inherit;font-size:14px;color:var(--ink)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* ── 頂部 ── */
+.top{background:var(--navy);color:#fff;position:relative;overflow:hidden;
+  padding:calc(15px + env(safe-area-inset-top)) 16px 18px}
+.top::before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
+  background-size:22px 22px;pointer-events:none}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--yellow)}
+.tin{max-width:560px;margin:0 auto;position:relative}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.mark{width:30px;height:30px;border:1.5px solid rgba(255,255,255,.55);border-radius:3px;
+  display:grid;place-items:center;flex:none;position:relative}
+.mark::after{content:"";position:absolute;left:50%;top:50%;width:11px;height:11px;transform:translate(-50%,-50%) rotate(45deg);
+  border:1.5px solid var(--yellow);border-radius:1px}
+.bt{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.bt b{font-size:14.5px;letter-spacing:.04em;font-weight:700;white-space:nowrap}
+.bt span{font-size:10.5px;color:rgba(255,255,255,.62);letter-spacing:.05em;white-space:nowrap}
+.ver{margin-left:auto;display:inline-flex;align-items:center;gap:5px;border:1px solid rgba(255,255,255,.22);
+  border-radius:3px;padding:3px 7px;font-size:10px;font-family:var(--mono);color:rgba(255,255,255,.78);white-space:nowrap}
+.ver i{width:5px;height:5px;border-radius:50%;background:#7BD48C;display:block}
+
+.lbl{font-size:10px;letter-spacing:.2em;color:rgba(255,255,255,.5);margin-bottom:7px;font-weight:600}
+.fams{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:9px}
+.fam{border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:5px 9px;font-size:12px;
+  color:rgba(255,255,255,.78);letter-spacing:.03em;transition:.14s;white-space:nowrap}
+.fam[aria-pressed="true"]{background:#fff;border-color:#fff;color:var(--navy);font-weight:700}
+.varis{display:flex;gap:5px;flex-wrap:wrap}
+.varis[hidden]{display:none}
+.vari{border:1px dashed rgba(255,255,255,.3);border-radius:3px;padding:4px 9px;font-size:11.5px;
+  color:rgba(255,255,255,.7);font-family:var(--mono);letter-spacing:.02em;transition:.14s}
+.vari[aria-pressed="true"]{border-style:solid;border-color:var(--yellow);color:var(--yellow);font-weight:600;background:rgba(255,210,63,.08)}
+.single{display:none}
+
+/* ── 區塊 ── */
+main{max-width:560px;margin:0 auto;padding:14px 14px 0}
+.sec{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+  margin-bottom:12px;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:8px;padding:11px 13px;border-bottom:1px solid var(--line-2);
+  background:linear-gradient(#FFFDF8,#FBF9F3)}
+.sec-h .no{font-family:var(--mono);font-size:10px;font-weight:600;color:#fff;background:var(--navy);
+  width:16px;height:16px;border-radius:2px;display:grid;place-items:center;flex:none;letter-spacing:0}
+.sec-h h2{margin:0;font-size:13px;font-weight:700;letter-spacing:.03em}
+.sec-h .hint{margin-left:auto;font-size:10.5px;color:var(--dim-2);letter-spacing:.02em}
+.sec-b{padding:4px 0 6px}
+
+/* ── 條列（點線引導） ── */
+.line{display:grid;grid-template-columns:auto 1fr auto auto;align-items:baseline;gap:7px;
+  padding:9px 13px;border-bottom:1px solid var(--line-2);width:100%;text-align:left;transition:background .12s}
+.line:last-child{border-bottom:0}
+.line:active{background:#FBFAF6}
+.line .nm{font-size:13.5px;font-weight:600;letter-spacing:.01em;white-space:nowrap}
+.line .nm em{display:block;font-style:normal;font-size:10px;font-weight:400;color:var(--dim-2);letter-spacing:.02em;margin-top:1px}
+.line .ld{border-bottom:1px dotted #CFC9BB;transform:translateY(-3px);min-width:8px}
+.line .amt{font-family:var(--mono);font-size:14.5px;font-weight:600;letter-spacing:-.02em;white-space:nowrap}
+.line .amt.neg{color:var(--red)}
+.line .amt.zero{color:#BFC3C2}
+.line.off{opacity:.42}
+.line.off .amt{text-decoration:line-through;text-decoration-thickness:1px}
+.chk{width:17px;height:17px;border:1.5px solid #C6C0B2;border-radius:3px;display:grid;place-items:center;
+  flex:none;align-self:center;transition:.13s;background:#fff}
+.line[data-on="1"] .chk{background:var(--navy);border-color:var(--navy)}
+.chk::after{content:"";width:8px;height:4px;border-left:1.8px solid #fff;border-bottom:1.8px solid #fff;
+  transform:rotate(-45deg) translateY(-1px);opacity:0;transition:.13s}
+.line[data-on="1"] .chk::after{opacity:1}
+
+/* ── 黃框（待確認） ── */
+.sec.unk{background:var(--yellow-soft);border:2px dashed var(--yellow-line);position:relative}
+.sec.unk .sec-h{background:transparent;border-bottom:1px dashed var(--yellow-line)}
+.sec.unk .sec-h .no{background:#8A6A00;color:#fff}
+.sec.unk .sec-h h2{color:#5C4800}
+.sec.unk .sec-h .hint{color:#9C8226}
+.unk-body{padding:12px 13px 14px}
+.ug{margin-bottom:13px}
+.ug:last-child{margin-bottom:0}
+.ug-t{display:flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.08em;color:#8A6A00;
+  font-weight:700;margin-bottom:8px}
+.ug-t .q{width:15px;height:15px;border-radius:50%;background:#8A6A00;color:#FFF7DC;font-size:10px;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700}
+.ug-t .sum{margin-left:auto;font-family:var(--mono);font-size:13px;color:#3D3000;font-weight:600}
+.ug-t .sum.on{background:#FFF;border:1px solid var(--yellow-line);border-radius:3px;padding:1px 7px}
+.bigchk{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--yellow-line);
+  border-radius:3px;padding:9px 11px;width:100%;text-align:left;transition:.14s}
+.bigchk .bx{width:18px;height:18px;border:1.5px solid #C7AE4A;border-radius:3px;display:grid;place-items:center;
+  flex:none;background:#fff;transition:.13s}
+.bigchk[data-on="1"] .bx{background:#8A6A00;border-color:#8A6A00}
+.bigchk .bx::after{content:"";width:9px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(-45deg) translateY(-1px);opacity:0}
+.bigchk[data-on="1"] .bx::after{opacity:1}
+.bigchk .tx{font-size:13px;font-weight:600;color:#3D3000}
+.bigchk .tx em{font-style:normal;font-weight:400;font-size:10.5px;color:#9C8226;display:block;margin-top:1px}
+.opts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.opts[hidden]{display:none}
+.opt{background:#fff;border:1px solid var(--yellow-line);border-radius:3px;padding:7px 12px;font-size:12.5px;
+  color:#6B5700;font-weight:600;letter-spacing:.02em;transition:.13s;flex:1;min-width:78px;text-align:center}
+.opt small{display:block;font-family:var(--mono);font-size:10.5px;font-weight:500;color:#A08928;margin-top:1px}
+.opt[aria-pressed="true"]{background:#8A6A00;border-color:#8A6A00;color:#fff}
+.opt[aria-pressed="true"] small{color:var(--yellow)}
+
+/* ── 累台 / 加碼 ── */
+.fld{display:flex;align-items:center;gap:9px;padding:10px 13px;border-bottom:1px solid var(--line-2)}
+.fld:last-child{border-bottom:0}
+.fld .fn{font-size:13px;font-weight:600;white-space:nowrap}
+.fld .fn em{display:block;font-style:normal;font-size:10px;color:var(--dim-2);font-weight:400;margin-top:1px}
+.fld .sp{flex:1;min-width:6px;border-bottom:1px dotted #CFC9BB;transform:translateY(-3px)}
+.inp{width:104px;border:1px solid var(--line);border-radius:3px;padding:7px 9px;text-align:right;
+  font-family:var(--mono);font-size:14px;font-weight:600;background:#FFFDF8;flex:none}
+.inp:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(22,50,79,.08);background:#fff}
+.inp::placeholder{color:#C3BEB0;font-weight:500}
+.inp.nm{width:auto;flex:1;text-align:left;font-family:inherit;font-weight:500;font-size:13px}
+.tipbox{margin:0 13px 6px;padding:8px 10px;background:var(--navy-tint);border-radius:3px;
+  font-size:10.5px;color:#3C5470;line-height:1.6}
+.tipbox b{color:var(--navy);font-weight:700;font-family:var(--mono)}
+
+/* ── 底部合計 ── */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--navy-2);color:#fff;
+  border-top:3px solid var(--yellow);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+.bar .bin{max-width:560px;margin:0 auto}
+.btop{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.bl{font-size:10px;letter-spacing:.14em;color:rgba(255,255,255,.55);margin-bottom:1px}
+.bv{font-family:var(--mono);font-size:31px;font-weight:700;line-height:1.05;letter-spacing:-.02em;
+  display:flex;align-items:baseline;gap:4px}
+.bv .cu{font-size:15px;color:var(--yellow);font-weight:600}
+.bacts{display:flex;gap:6px;flex:none;margin-bottom:3px}
+.bacts button{border:1px solid rgba(255,255,255,.24);border-radius:3px;padding:7px 11px;font-size:11.5px;
+  color:#E8EDF1;letter-spacing:.04em;white-space:nowrap}
+.bacts button.pri{background:var(--yellow);border-color:var(--yellow);color:var(--navy);font-weight:700}
+.bacts button:active{transform:translateY(1px)}
+.bk{display:flex;flex-wrap:wrap;gap:2px 7px;font-size:10px;color:rgba(255,255,255,.55);
+  margin-top:5px;font-family:var(--mono);letter-spacing:0}
+.bk span{white-space:nowrap}
+.bk b{color:#DCE3E9;font-weight:600}
+.bk .p{color:rgba(255,255,255,.3)}
+
+.toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translate(-50%,10px);
+  background:var(--ink);color:#fff;padding:9px 14px;border-radius:4px;font-size:12.5px;max-width:calc(100vw - 40px);
+  opacity:0;pointer-events:none;transition:.2s;z-index:40;text-align:center;line-height:1.5}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+footer{max-width:560px;margin:0 auto;padding:14px 16px 6px;font-size:10px;color:#A6A79F;line-height:1.7;text-align:center}
+@media (min-width:560px){body{font-size:14.5px}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="tin">
+    <div class="brand">
+      <span class="mark"></span>
+      <span class="bt"><b>新車獎金條件</b><span>Honda South TC · 條件試算單</span></span>
+      <span class="ver"><i></i><span data-ver>v1.0.0</span></span>
+    </div>
+    <div class="lbl">車　型</div>
+    <div class="fams" id="fams" role="group" aria-label="車系"></div>
+    <div class="varis" id="varis" role="group" aria-label="編成"></div>
+  </div>
+</div>
+
+<main>
+  <section class="sec" aria-labelledby="h1">
+    <div class="sec-h"><span class="no">1</span><h2 id="h1">已知獎金</h2><span class="hint" id="hintKnown">自動列出</span></div>
+    <div class="sec-b" id="knownList"></div>
+  </section>
+
+  <section class="sec unk" aria-labelledby="h2">
+    <div class="sec-h"><span class="no">2</span><h2 id="h2">待確認項目</h2><span class="hint">勾選自動帶入金額</span></div>
+    <div class="unk-body">
+      <div class="ug">
+        <div class="ug-t"><span class="q">1</span>保險<span class="sum" id="insSum">$0</span></div>
+        <button type="button" class="bigchk" id="insOn" data-on="0">
+          <span class="bx"></span>
+          <span class="tx" id="insTx">客戶有投保<em>勾選後選乙式／丙式與代步車</em></span>
+        </button>
+        <div class="opts" id="insOpts" hidden>
+          <button type="button" class="opt" data-ins="乙式" aria-pressed="false">乙式<small id="insA">$3,000</small></button>
+          <button type="button" class="opt" data-ins="丙式" aria-pressed="false">丙式<small id="insB">$1,500</small></button>
+        </div>
+        <div class="opts" id="subOpts" hidden>
+          <button type="button" class="opt" data-sub="有代步" aria-pressed="false">有代步車<small id="subA">$3,000</small></button>
+          <button type="button" class="opt" data-sub="沒代步" aria-pressed="false">無代步車<small id="subB">$2,000</small></button>
+        </div>
+      </div>
+      <div class="ug">
+        <div class="ug-t"><span class="q">2</span>貸款<span class="sum" id="loanSum">$0</span></div>
+        <button type="button" class="bigchk" id="loanOn" data-on="0">
+          <span class="bx"></span>
+          <span class="tx">客戶有貸款<em>勾選帶入 $2,000，未勾選為 $0</em></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h3">
+    <div class="sec-h"><span class="no">3</span><h2 id="h3">累台獎金</h2><span class="hint">金額依個人台數不同</span></div>
+    <div class="sec-b">
+      <div class="fld">
+        <span class="fn">台本累台<em id="tbHint">預設帶入表列金額</em></span>
+        <span class="sp"></span>
+        <input type="number" class="inp" id="taiben" inputmode="numeric" placeholder="0" aria-label="台本累台">
+      </div>
+      <div class="fld">
+        <span class="fn">高速累台<em>自行輸入</em></span>
+        <span class="sp"></span>
+        <input type="number" class="inp" id="gaosu" inputmode="numeric" placeholder="0" aria-label="高速累台">
+      </div>
+      <div class="tipbox" id="tbTip"></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h4">
+    <div class="sec-h"><span class="no">4</span><h2 id="h4">加碼項目</h2><span class="hint">自行填寫名稱與金額</span></div>
+    <div class="sec-b" id="extraList"></div>
+  </section>
+</main>
+
+<footer>本表為個人試算，實際獎金以公司公告與薪資單為準。資料只存在這台裝置，不會上傳。</footer>
+
+<div class="bar">
+  <div class="bin">
+    <div class="btop">
+      <div>
+        <div class="bl">合計</div>
+        <div class="bv"><span class="cu">$</span><span id="total">0</span></div>
+      </div>
+      <div class="bacts">
+        <button type="button" id="btnCopy">複製</button>
+        <button type="button" class="pri" id="btnReset">重設</button>
+      </div>
+    </div>
+    <div class="bk" id="breakdown"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+window.APP_VERSION = '1.0.0';
+window.APP_BUILD = '2026-10-31 19:20';
+
+/* ── 表列資料（新車條件.xlsx） ── */
+const VARIANTS = [
+  {f:'HR-V',   id:'hrv-s',    n:'S',     sp:12000, daiyu:15000, stock:2000, warranty:3000,  taiben:2500},
+  {f:'HR-V',   id:'hrv-es',   n:'ES',    sp:15000, daiyu:17000, stock:2000, warranty:3000,  taiben:5000},
+  {f:'HR-V',   id:'hrv-ep',   n:'EP',    sp:18000, daiyu:27000, stock:2000, warranty:3000,  taiben:5000},
+  {f:'CR-V',   id:'crv-vtis', n:'VTIS',  sp:20000, daiyu:5000,  stock:null, warranty:-8000, taiben:2500},
+  {f:'CR-V',   id:'crv-s',    n:'S',     sp:20000, daiyu:5000,  stock:null, warranty:-8000, taiben:2500},
+  {f:'CR-V',   id:'crv-es',   n:'ES',    sp:25000, daiyu:27000, stock:2000, warranty:5000,  taiben:5000},
+  {f:'CR-V',   id:'crv-ep',   n:'EP',    sp:25000, daiyu:19000, stock:2000, warranty:5000,  taiben:5000},
+  {f:'FIT',    id:'fit-home', n:'HOME',  sp:38000, daiyu:10000, stock:2000, warranty:2000,  taiben:2500},
+  {f:'FIT',    id:'fit-ehev', n:'e:HEV', sp:42000, daiyu:20000, stock:2000, warranty:2000,  taiben:5000},
+  {f:'ZR-V',   id:'zrv',      n:'',      sp:20000, daiyu:6000,  stock:null, warranty:-8000, taiben:2500},
+  {f:'CIVIC',  id:'civic',    n:'',      sp:30000, daiyu:null,  stock:null, warranty:null,  taiben:2500},
+  {f:'PRELUDE',id:'prelude',  n:'',      sp:20000, daiyu:null,  stock:null, warranty:null,  taiben:0}
+];
+const KNOWN = [
+  {k:'sp',       label:'SP'},
+  {k:'daiyu',    label:'代宇'},
+  {k:'stock',    label:'在庫車',   note:'限在庫車'},
+  {k:'warranty', label:'保固強綁', note:'表列為扣項'}
+];
+const INS = {'乙式':{'有代步':3000,'沒代步':2000}, '丙式':{'有代步':1500,'沒代步':1000}};
+const LOAN_ON = 2000;
+const N_EXTRA = 3;
+const KEY = 'hondaCond.v1';
+
+const money = n => Math.round(n).toLocaleString('en-US');
+const $ = id => document.getElementById(id);
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+let state = { family:'HR-V', vid:'hrv-s', data:{} };
+
+const variant = () => VARIANTS.find(v => v.id === state.vid) || VARIANTS[0];
+function blank(){
+  return { inc:{sp:1, daiyu:1, stock:1, warranty:1}, insOn:0, insType:'乙式', insSub:'有代步',
+           loanOn:0, taiben:'', gaosu:'', extras: Array.from({length:N_EXTRA}, () => ({n:'', a:''})) };
+}
+function D(){
+  if(!state.data[state.vid]) state.data[state.vid] = blank();
+  const d = state.data[state.vid];
+  if(!d.extras || d.extras.length !== N_EXTRA) d.extras = Array.from({length:N_EXTRA}, (_,i) => (d.extras && d.extras[i]) || {n:'', a:''});
+  return d;
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(KEY); if(!raw) return;
+    const o = JSON.parse(raw); if(!o || typeof o !== 'object') return;
+    if(VARIANTS.some(v => v.id === o.vid)){ state.vid = o.vid; state.family = variant().f; }
+    if(o.data && typeof o.data === 'object') state.data = o.data;
+  }catch(e){}
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ── 車型 ── */
+function renderModels(){
+  const fams = [];
+  VARIANTS.forEach(v => { if(fams.indexOf(v.f) < 0) fams.push(v.f); });
+  $('fams').innerHTML = fams.map(f =>
+    `<button type="button" class="fam" data-fam="${f}" aria-pressed="${f===state.family}">${f}</button>`).join('');
+  const list = VARIANTS.filter(v => v.f === state.family);
+  const box = $('varis');
+  if(list.length > 1){
+    box.hidden = false;
+    box.innerHTML = list.map(v =>
+      `<button type="button" class="vari" data-vid="${v.id}" aria-pressed="${v.id===state.vid}">${v.n || v.f}</button>`).join('');
+  }else{
+    box.hidden = true; box.innerHTML = '';
+    state.vid = list[0].id;
+  }
+}
+
+/* ── 已知獎金 ── */
+function knownSum(){
+  const v = variant(), d = D();
+  let s = 0, n = 0;
+  KNOWN.forEach(k => {
+    if(v[k.k] === null) return;
+    if(d.inc[k.k]){ s += v[k.k]; n++; }
+  });
+  return {s, n};
+}
+function renderKnown(){
+  const v = variant(), d = D();
+  $('knownList').innerHTML = KNOWN.map(k => {
+    const val = v[k.k];
+    if(val === null){
+      return `<div class="line off" data-on="0" style="pointer-events:none">
+        <span class="chk" style="visibility:hidden"></span>
+        <span class="nm">${k.label}<em>此編成不適用</em></span>
+        <span class="ld"></span>
+        <span class="amt zero">—</span></div>`;
+    }
+    const on = d.inc[k.k] ? '1' : '0';
+    const cls = ['line']; if(!d.inc[k.k]) cls.push('off');
+    const amtCls = ['amt']; if(val < 0) amtCls.push('neg'); if(val === 0) amtCls.push('zero');
+    return `<button type="button" class="${cls.join(' ')}" data-k="${k.k}" data-on="${on}">
+      <span class="chk"></span>
+      <span class="nm">${k.label}${k.note ? `<em>${k.note}</em>` : ''}</span>
+      <span class="ld"></span>
+      <span class="${amtCls.join(' ')}">${val < 0 ? '−' : ''}$${money(Math.abs(val))}</span></button>`;
+  }).join('');
+  const ks = knownSum();
+  $('hintKnown').textContent = ks.n ? `${ks.n} 項計入` : '全部未計入';
+}
+
+/* ── 待確認 ── */
+function insAmount(){ const d = D(); return d.insOn ? (INS[d.insType] && INS[d.insType][d.insSub]) || 0 : 0; }
+function loanAmount(){ return D().loanOn ? LOAN_ON : 0; }
+function renderUnknown(){
+  const d = D();
+  $('insOn').dataset.on = d.insOn ? '1' : '0';
+  $('insOpts').hidden = !d.insOn;
+  $('subOpts').hidden = !d.insOn;
+  $('insTx').innerHTML = d.insOn
+    ? `客戶有投保<em>${d.insType} · ${d.insSub === '有代步' ? '有代步車' : '無代步車'}</em>`
+    : '客戶有投保<em>勾選後選乙式／丙式與代步車</em>';
+  document.querySelectorAll('[data-ins]').forEach(b => b.setAttribute('aria-pressed', b.dataset.ins === d.insType));
+  document.querySelectorAll('[data-sub]').forEach(b => b.setAttribute('aria-pressed', b.dataset.sub === d.insSub));
+  // 選項上的金額跟著目前選擇變動
+  $('insA').textContent = '$' + money(INS['乙式'][d.insSub]);
+  $('insB').textContent = '$' + money(INS['丙式'][d.insSub]);
+  $('subA').textContent = '$' + money(INS[d.insType]['有代步']);
+  $('subB').textContent = '$' + money(INS[d.insType]['沒代步']);
+  const ia = insAmount();
+  $('insSum').textContent = ia ? '$' + money(ia) : '$0';
+  $('insSum').classList.toggle('on', ia > 0);
+  $('loanOn').dataset.on = d.loanOn ? '1' : '0';
+  const la = loanAmount();
+  $('loanSum').textContent = la ? '$' + money(la) : '$0';
+  $('loanSum').classList.toggle('on', la > 0);
+}
+
+/* ── 累台 ── */
+function taibenValue(){
+  const d = D(), v = variant();
+  const raw = String(d.taiben).trim();
+  if(raw === '') return v.taiben || 0;
+  const n = Number(raw); return isNaN(n) ? 0 : n;
+}
+function gaosuValue(){ const n = Number(String(D().gaosu).trim()); return isNaN(n) ? 0 : n; }
+function renderAcc(){
+  const v = variant(), d = D();
+  $('taiben').value = d.taiben;
+  $('taiben').placeholder = money(v.taiben || 0);
+  $('gaosu').value = d.gaosu;
+  $('gaosu').placeholder = '0';
+  $('tbHint').textContent = `表列預設 $${money(v.taiben || 0)}，可自行修改`;
+  $('tbTip').innerHTML = `台本累台：此編成表列為 <b>$${money(v.taiben || 0)}</b>。實際金額依個人累計台數而不同，留空則採用預設值。` +
+    `<br>高速累台：表內無此欄位，請自行輸入實際金額（留空為 <b>$0</b>）。`;
+}
+
+/* ── 加碼 ── */
+function extraSum(){ return D().extras.reduce((a, x) => a + (Number(String(x.a).trim()) || 0), 0); }
+function renderExtra(){
+  const d = D();
+  $('extraList').innerHTML = d.extras.map((x, i) =>
+    `<div class="fld">
+      <input type="text" class="inp nm" data-ex="${i}" data-f="n" value="${esc(x.n)}" placeholder="加碼項目 ${i+1}" aria-label="加碼項目 ${i+1} 名稱">
+      <input type="number" class="inp" data-ex="${i}" data-f="a" value="${x.a === '' ? '' : esc(x.a)}" placeholder="0" inputmode="numeric" aria-label="加碼項目 ${i+1} 金額">
+    </div>`).join('');
+}
+
+/* ── 合計 ── */
+function total(){
+  const ks = knownSum();
+  return {known: ks.s, ins: insAmount(), loan: loanAmount(), tb: taibenValue(), gs: gaosuValue(), ex: extraSum()};
+}
+function renderTotal(){
+  const t = total();
+  const sum = t.known + t.ins + t.loan + t.tb + t.gs + t.ex;
+  $('total').textContent = money(sum);
+  const acc = t.tb + t.gs;
+  $('breakdown').innerHTML =
+    `<span>已知 <b>$${money(t.known)}</b></span><span class="p">·</span>` +
+    `<span>保險 <b>$${money(t.ins)}</b></span><span class="p">·</span>` +
+    `<span>貸款 <b>$${money(t.loan)}</b></span><span class="p">·</span>` +
+    `<span>累台 <b>$${money(acc)}</b></span><span class="p">·</span>` +
+    `<span>加碼 <b>$${money(t.ex)}</b></span>`;
+  return sum;
+}
+function renderAll(){ renderModels(); renderKnown(); renderUnknown(); renderAcc(); renderExtra(); renderTotal(); }
+
+/* ── 事件 ── */
+$('fams').addEventListener('click', e => {
+  const b = e.target.closest('[data-fam]'); if(!b) return;
+  state.family = b.dataset.fam;
+  const list = VARIANTS.filter(v => v.f === state.family);
+  state.vid = list[0].id;
+  save(); renderAll();
+});
+$('varis').addEventListener('click', e => {
+  const b = e.target.closest('[data-vid]'); if(!b) return;
+  state.vid = b.dataset.vid; save(); renderAll();
+});
+
+$('knownList').addEventListener('click', e => {
+  const b = e.target.closest('[data-k]'); if(!b) return;
+  const k = b.dataset.k, d = D();
+  d.inc[k] = d.inc[k] ? 0 : 1;
+  save(); renderKnown(); renderTotal();
+});
+
+$('insOn').addEventListener('click', () => {
+  const d = D(); d.insOn = d.insOn ? 0 : 1; save(); renderUnknown(); renderTotal();
+});
+$('insOpts').addEventListener('click', e => {
+  const b = e.target.closest('[data-ins]'); if(!b) return;
+  D().insType = b.dataset.ins; save(); renderUnknown(); renderTotal();
+});
+$('subOpts').addEventListener('click', e => {
+  const b = e.target.closest('[data-sub]'); if(!b) return;
+  D().insSub = b.dataset.sub; save(); renderUnknown(); renderTotal();
+});
+$('loanOn').addEventListener('click', () => {
+  const d = D(); d.loanOn = d.loanOn ? 0 : 1; save(); renderUnknown(); renderTotal();
+});
+
+$('taiben').addEventListener('input', e => { D().taiben = e.target.value; save(); renderTotal(); });
+$('gaosu').addEventListener('input', e => { D().gaosu = e.target.value; save(); renderTotal(); });
+$('extraList').addEventListener('input', e => {
+  const el = e.target.closest('[data-ex]'); if(!el) return;
+  const i = +el.dataset.ex, f = el.dataset.f;
+  D().extras[i][f] = el.value; save(); renderTotal();
+});
+
+$('btnReset').addEventListener('click', () => {
+  if(!confirm('重設目前車型的所有條件？（其他車型的紀錄不受影響）')) return;
+  delete state.data[state.vid];
+  save(); renderAll();
+  toast('已重設 ' + labelOf(variant()));
+});
+
+$('btnCopy').addEventListener('click', async () => {
+  const v = variant(), d = D(), t = total();
+  const lines = [];
+  lines.push('【' + labelOf(v) + ' 獎金條件】');
+  KNOWN.forEach(k => {
+    if(v[k.k] === null) return;
+    const val = v[k.k];
+    lines.push(`${d.inc[k.k] ? '✔' : '✗'} ${k.label}　${val < 0 ? '−' : ''}$${money(Math.abs(val))}`);
+  });
+  lines.push(`${d.insOn ? '✔' : '✗'} 保險${d.insOn ? `（${d.insType}／${d.insSub}）` : ''}　$${money(t.ins)}`);
+  lines.push(`${d.loanOn ? '✔' : '✗'} 貸款　$${money(t.loan)}`);
+  lines.push(`台本累台　$${money(t.tb)}`);
+  lines.push(`高速累台　$${money(t.gs)}`);
+  d.extras.forEach((x, i) => { if(x.n || String(x.a).trim() !== '') lines.push(`加碼 ${i+1}：${x.n || '—'}　$${money(Number(x.a) || 0)}`); });
+  lines.push('──────────');
+  lines.push(`合計 $${money(t.known + t.ins + t.loan + t.tb + t.gs + t.ex)}`);
+  const txt = lines.join('\n');
+  try{ await navigator.clipboard.writeText(txt); toast('已複製，可直接貼到 LINE'); }
+  catch(err){
+    const ta = document.createElement('textarea'); ta.value = txt;
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('已複製，可直接貼到 LINE'); }catch(e2){ toast('複製失敗，請長按選取'); }
+    ta.remove();
+  }
+});
+
+function labelOf(v){ return v.n ? v.f + ' ' + v.n : v.f; }
+let tt = null;
+function toast(msg){
+  const el = $('toast'); el.textContent = msg; el.classList.add('show');
+  clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+document.querySelectorAll('[data-ver]').forEach(el => { el.textContent = 'v' + window.APP_VERSION; });
+document.querySelector('.ver').addEventListener('click', () => {
+  if(!confirm('強制重新整理到最新版本？\n（已填的條件會保留）')) return;
+  const jobs = [];
+  if(window.caches && caches.keys) jobs.push(caches.keys().then(ks => Promise.all(ks.map(k => caches.delete(k)))));
+  if('serviceWorker' in navigator && navigator.serviceWorker.getRegistrations)
+    jobs.push(navigator.serviceWorker.getRegistrations().then(rs => Promise.all(rs.map(r => r.unregister()))));
+  Promise.all(jobs).catch(()=>{}).then(() => location.reload());
+});
+
+/* 啟動 */
+load(); renderAll();
+if('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      reg.addEventListener('updatefound', () => {
+        const w = reg.installing;
+        if(w) w.addEventListener('statechange', () => {
+          if(w.state === 'installed' && navigator.serviceWorker.controller) toast('有新版本，按版本號可更新');
+        });
+      });
+      const check = () => { if(document.visibilityState === 'visible') reg.update().catch(()=>{}); };
+      document.addEventListener('visibilitychange', check);
+      setTimeout(check, 4000);
+    }).catch(()=>{});
+  });
+}
+</script>
+</body>
+</html>

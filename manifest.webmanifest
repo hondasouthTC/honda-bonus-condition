@@ -1,0 +1,17 @@
+{
+  "name": "Honda South TC 新車獎金條件",
+  "short_name": "獎金條件",
+  "description": "選車型自動列出已知獎金，保險與貸款勾選自動帶入，累台與加碼自行輸入",
+  "lang": "zh-Hant",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#16324F",
+  "theme_color": "#16324F",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
