@@ -269,8 +269,8 @@ footer{max-width:560px;margin:0 auto;padding:14px 16px 6px;font-size:10px;color:
 
 <div class="toast" id="toast"></div>
 <script>
-window.APP_VERSION = '1.0.0';
-window.APP_BUILD = '2026-10-31 19:20';
+window.APP_VERSION = '1.0.1';
+window.APP_BUILD = '2026-10-31 19:26';
 
 /* ── 表列資料（新車條件.xlsx） ── */
 const VARIANTS = [
@@ -517,7 +517,8 @@ $('btnCopy').addEventListener('click', async () => {
   lines.push(`${d.loanOn ? '✔' : '✗'} 貸款　$${money(t.loan)}`);
   lines.push(`台本累台　$${money(t.tb)}`);
   lines.push(`高速累台　$${money(t.gs)}`);
-  d.extras.forEach((x, i) => { if(x.n || String(x.a).trim() !== '') lines.push(`加碼 ${i+1}：${x.n || '—'}　$${money(Number(x.a) || 0)}`); });
+  const fm = v => (v < 0 ? '-$' : '$') + money(Math.abs(v));
+  d.extras.forEach((x, i) => { if(x.n || String(x.a).trim() !== '') lines.push(`加碼 ${i+1}：${x.n || '—'}　${fm(Number(x.a) || 0)}`); });
   lines.push('──────────');
   lines.push(`合計 $${money(t.known + t.ins + t.loan + t.tb + t.gs + t.ex)}`);
   const txt = lines.join('\n');
