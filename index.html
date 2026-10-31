@@ -269,25 +269,13 @@ footer{max-width:560px;margin:0 auto;padding:14px 16px 6px;font-size:10px;color:
 
 <div class="toast" id="toast"></div>
 <script>
-window.APP_VERSION = '1.0.1';
-window.APP_BUILD = '2026-10-31 19:26';
+window.APP_VERSION = '1.1.0';
+window.APP_BUILD = '2026-10-31 19:22';
 
 /* ── 表列資料（新車條件.xlsx） ── */
-const VARIANTS = [
-  {f:'HR-V',   id:'hrv-s',    n:'S',     sp:12000, daiyu:15000, stock:2000, warranty:3000,  taiben:2500},
-  {f:'HR-V',   id:'hrv-es',   n:'ES',    sp:15000, daiyu:17000, stock:2000, warranty:3000,  taiben:5000},
-  {f:'HR-V',   id:'hrv-ep',   n:'EP',    sp:18000, daiyu:27000, stock:2000, warranty:3000,  taiben:5000},
-  {f:'CR-V',   id:'crv-vtis', n:'VTIS',  sp:20000, daiyu:5000,  stock:null, warranty:-8000, taiben:2500},
-  {f:'CR-V',   id:'crv-s',    n:'S',     sp:20000, daiyu:5000,  stock:null, warranty:-8000, taiben:2500},
-  {f:'CR-V',   id:'crv-es',   n:'ES',    sp:25000, daiyu:27000, stock:2000, warranty:5000,  taiben:5000},
-  {f:'CR-V',   id:'crv-ep',   n:'EP',    sp:25000, daiyu:19000, stock:2000, warranty:5000,  taiben:5000},
-  {f:'FIT',    id:'fit-home', n:'HOME',  sp:38000, daiyu:10000, stock:2000, warranty:2000,  taiben:2500},
-  {f:'FIT',    id:'fit-ehev', n:'e:HEV', sp:42000, daiyu:20000, stock:2000, warranty:2000,  taiben:5000},
-  {f:'ZR-V',   id:'zrv',      n:'',      sp:20000, daiyu:6000,  stock:null, warranty:-8000, taiben:2500},
-  {f:'CIVIC',  id:'civic',    n:'',      sp:30000, daiyu:null,  stock:null, warranty:null,  taiben:2500},
-  {f:'PRELUDE',id:'prelude',  n:'',      sp:20000, daiyu:null,  stock:null, warranty:null,  taiben:0}
-];
+const VARIANTS = [{"f":"HR-V","id":"hrv-s","n":"S","bonus":12000,"sp":15000,"daiyu":2000,"stock":3000,"warranty":null,"taiben":2500},{"f":"HR-V","id":"hrv-es","n":"ES","bonus":15000,"sp":17000,"daiyu":2000,"stock":3000,"warranty":null,"taiben":5000},{"f":"HR-V","id":"hrv-ep","n":"EP","bonus":18000,"sp":27000,"daiyu":2000,"stock":3000,"warranty":null,"taiben":5000},{"f":"CR-V","id":"crv-vtis","n":"VTIS","bonus":20000,"sp":5000,"daiyu":null,"stock":3000,"warranty":-8000,"taiben":2500},{"f":"CR-V","id":"crv-s","n":"S","bonus":20000,"sp":5000,"daiyu":null,"stock":3000,"warranty":-8000,"taiben":2500},{"f":"CR-V","id":"crv-es","n":"ES","bonus":25000,"sp":27000,"daiyu":2000,"stock":5000,"warranty":null,"taiben":5000},{"f":"CR-V","id":"crv-ep","n":"EP","bonus":25000,"sp":19000,"daiyu":2000,"stock":5000,"warranty":null,"taiben":5000},{"f":"FIT","id":"fit-home","n":"HOME","bonus":38000,"sp":10000,"daiyu":2000,"stock":2000,"warranty":null,"taiben":2500},{"f":"FIT","id":"fit-ehev","n":"e:HEV","bonus":42000,"sp":20000,"daiyu":2000,"stock":2000,"warranty":null,"taiben":5000},{"f":"ZR-V","id":"zrv","n":"","bonus":20000,"sp":6000,"daiyu":null,"stock":null,"warranty":-8000,"taiben":2500},{"f":"CIVIC","id":"civic","n":"","bonus":30000,"sp":null,"daiyu":null,"stock":null,"warranty":null,"taiben":2500},{"f":"PRELUDE","id":"prelude","n":"","bonus":20000,"sp":null,"daiyu":null,"stock":null,"warranty":null,"taiben":0}];
 const KNOWN = [
+  {k:'bonus',    label:'獎金'},
   {k:'sp',       label:'SP'},
   {k:'daiyu',    label:'代宇'},
   {k:'stock',    label:'在庫車',   note:'限在庫車'},
@@ -296,7 +284,7 @@ const KNOWN = [
 const INS = {'乙式':{'有代步':3000,'沒代步':2000}, '丙式':{'有代步':1500,'沒代步':1000}};
 const LOAN_ON = 2000;
 const N_EXTRA = 3;
-const KEY = 'hondaCond.v1';
+const KEY = 'hondaCond.v2';
 
 const money = n => Math.round(n).toLocaleString('en-US');
 const $ = id => document.getElementById(id);
@@ -306,7 +294,7 @@ let state = { family:'HR-V', vid:'hrv-s', data:{} };
 
 const variant = () => VARIANTS.find(v => v.id === state.vid) || VARIANTS[0];
 function blank(){
-  return { inc:{sp:1, daiyu:1, stock:1, warranty:1}, insOn:0, insType:'乙式', insSub:'有代步',
+  return { inc:{bonus:1, sp:1, daiyu:1, stock:1, warranty:1}, insOn:0, insType:'乙式', insSub:'有代步',
            loanOn:0, taiben:'', gaosu:'', extras: Array.from({length:N_EXTRA}, () => ({n:'', a:''})) };
 }
 function D(){
